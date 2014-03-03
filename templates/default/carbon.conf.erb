@@ -167,9 +167,9 @@ AMQP_METRIC_NAME_IN_BODY = <%= @carbon_options[:amqp_metric_name_in_body] ? "Tru
 # Example: store everything
 # BIND_PATTERNS = #
 
-<% if @carbon_options[:caches].length > 1 -%>
+<% if @carbon_options[:caches] -%>
 # Configure special settings for other the carbon-cache instances
-<%   @carbon_options[:caches].each do |instance| -%>
+<%   @carbon_options[:caches].to_hash.each do |instance| -%>
 <%     if instance.first != "a" -%>
 [cache:<%= instance.first %>]
 LINE_RECEIVER_INTERFACE = <%= instance.last[:line_receiver_interface] %>
