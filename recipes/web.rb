@@ -37,12 +37,9 @@ else
 end
 
 python_pip 'graphite_web' do
-  package_name lazy {
-    node['graphite']['package_names']['graphite_web'][node['graphite']['install_type']]
-  }
-  version lazy {
-    node['graphite']['install_type'] == 'package' ? node['graphite']['version'] : nil
-  }
+  package_name node['graphite']['package_names']['graphite_web'][node['graphite']['install_type']]
+  version node['graphite']['install_type'] == 'package' ? node['graphite']['version'] : nil
+  action :install
 end
 
 directory "#{storagedir}/log/webapp" do

@@ -40,16 +40,14 @@ end
 # sadly, have to pin Twisted to known good version
 # install before carbon so it's used
 python_pip 'Twisted' do
-  version lazy { node['graphite']['twisted_version'] }
+  version node['graphite']['twisted_version']
+  action :install
 end
 
 python_pip 'carbon' do
-  package_name lazy {
-    node['graphite']['package_names']['carbon'][node['graphite']['install_type']]
-  }
-  version lazy {
-    node['graphite']['install_type'] == 'package' ? node['graphite']['version'] : nil
-  }
+  package_name node['graphite']['package_names']['carbon'][node['graphite']['install_type']]
+  version node['graphite']['install_type'] == 'package' ? node['graphite']['version'] : nil
+  action :install
 end
 
 directory "#{node['graphite']['base_dir']}/conf" do
