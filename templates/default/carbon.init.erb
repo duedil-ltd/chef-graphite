@@ -23,6 +23,14 @@ if [ -f /etc/init.d/functions ]; then
   . /etc/init.d/functions
 fi
 
+success() {
+  return 0 
+}
+
+failure() {
+  return 0
+}
+
 start() {
 
   if [ ! -d "$LOGDIR" ] ; then

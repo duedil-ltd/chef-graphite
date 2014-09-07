@@ -26,6 +26,22 @@ else
   carbon_relay_service_resource = 'service[carbon-relay]'
 end
 
+if node['graphite']['storage_schemas'].is_a?(Array) && node['graphite']['storage_schemas'].length > 0
+  template "#{node['graphite']['base_dir']}/conf/storage-schemas.conf" do
+    source 'storage.conf.erb'
+    owner node['graphite']['user_account']
+    group node['graphite']['group_account']
+    variables(:storage_config => node['graphite']['storage_schemas'])
+    only_if { node['graphite']['storage_schemas'].is_a?(Array) }
+    notifies :restart, carbon_relay_service_resource
+  end
+else
+  file "#{node['graphite']['base_dir']}/conf/storage-schemas.conf" do
+    action :delete
+    notifies :restart, carbon_relay_service_resource
+  end
+end
+
 template "#{node['graphite']['base_dir']}/conf/relay-rules.conf" do
   owner node['graphite']['user_account']
   group node['graphite']['group_account']
